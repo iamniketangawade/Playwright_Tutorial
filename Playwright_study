@@ -1,0 +1,114 @@
+Playwright
+-------------------------------------------------------------------------------------------
+// Head-less
+		Playwright playwright =Playwright.create();  //Create Playwright interface
+		Browser browser= playwright.chromium().launch();
+		Page page =browser.newPage();
+		
+		page.navigate("https://testautomationpractice.blogspot.com/?");
+		System.out.println(page.title());  //Return : Page title
+				playwright.close();  //Close the session.		
+		
+-------------------------------------------------------------------------------------------		
+// Default  :: Chromium browser 
+		Playwright playwright =Playwright.create();  //Create Playwright interface
+		Browser browser= playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));  //lauching default chromium browser
+		Page page =browser.newPage();
+		
+		page.navigate("https://testautomationpractice.blogspot.com/?"); //Navigate URL
+		playwright.close();  //Close the session.		
+		
+		
+-------------------------------------------------------------------------------------------		
+//Maximize browser::
+		Browser browser= playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setArgs(java.util.Arrays.asList("--start-maximized"))); //maximized screen
+		BrowserContext browserContext= browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
+		Page page =browserContext.newPage();
+		
+🟢 --start-maximized opens the browser maximized.
+🟢 setViewportSize(null) ensures the browser context matches your full screen size.
+
+-------------------------------------------------------------------------------------------	
+//Another simple way of Maximizing the window - Code	
+		ArrayList<String> arguments =new ArrayList<String>();
+		arguments.add("--start-maximized");
+		Browser browser= playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setArgs(arguments));
+		BrowserContext browserContext= browser.newContext(new Browser.NewContextOptions().setViewportSize(null)); //Minimize the screen window
+		Page page =browserContext.newPage();
+
+		page.navigate("https://testautomationpractice.blogspot.com/?"); //Navigate URL
+	
+-------------------------------------------------------------------------------------------
+//minimize browser::
+		Browser browser= playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+		BrowserContext browserContext= browser.newContext(new Browser.NewContextOptions().setViewportSize(200,100)); //Minimize the screen window as per user resolution 
+		Page page =browserContext.newPage();
+		
+-------------------------------------------------------------------------------------------		
+//Chrome browser lauch using EXE :chrome.exe
+		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setExecutablePath(Paths.get("C:\\Users\\Niketan Gawade\\chrome\\win64-141.0.7390.54\\chrome-win64\\chrome.exe")));
+		BrowserContext browsercontext =browser.newContext();
+		Page page = browsercontext.newPage();
+		page.navigate("https://testautomationpractice.blogspot.com/?");		
+		
+-------------------------------------------------------------------------------------------
+//Firefox browser launch 
+		Browser browser =playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+		BrowserContext browsercontext =browser.newContext();
+		Page page = browsercontext.newPage();
+		
+		page.navigate("https://testautomationpractice.blogspot.com/?");
+		
+-------------------------------------------------------------------------------------------		
+//Another simple way of launch the browsers ::msedge,chrome,	
+		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
+		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
+
+-------------------------------------------------------------------------------------------
+//Open specific user profile in browser
+		
+		String userInfo= "C:\\Users\\Niketan Gawade\\AppData\\Local\\Google\\Chrome\\User Data\\Default";
+		BrowserContext browsercontext = playwright.chromium().launchPersistentContext(Paths.get(userInfo),new BrowserType.LaunchPersistentContextOptions().setChannel("chrome").setHeadless(false).setArgs(java.util.Arrays.asList("--start-maximized")));
+		Page page =browsercontext.newPage();
+		page.navigate("https://testautomationpractice.blogspot.com/?");
+		
+-------------------------------------------------------------------------------------------
+//Incongito or private mode ::
+		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+		
+		BrowserContext browserContext =browser.newContext();
+		Page page =browserContext.newPage();
+		page.navigate("https://testautomationpractice.blogspot.com/?");
+		
+-------------------------------------------------------------------------------------------
+//Navigate methods::
+
+		✅ 1.Basic navigation option
+		page.navigate("https://testautomationpractice.blogspot.com/?");
+
+		//✅ 2. Navigation with Wait Options
+		page.navigate("https://testautomationpractice.blogspot.com/?",
+				new NavigateOptions().setTimeout(5000)
+				.setWaitUntil(WaitUntilState.NETWORKIDLE));
+		
+		/*
+		//Wait states:
+		LOAD → Waits for the load event.
+		DOMCONTENTLOADED → Waits for DOM to be ready.
+		NETWORKIDLE → Waits until no network requests for 500ms. */
+		
+		//✅ 3. Forward, Backward, and Refresh Navigation
+		page.goBack();  //Going backward page;
+		Thread.sleep(2000);
+		
+		page.goForward(); //Going forward page
+		Thread.sleep(2000);
+		
+		page.reload();  //Page refresh
+		
+-------------------------------------------------------------------------------------------
+//Handling locators 
+
+		page.locator("#name").type("Niketan");       //Using id locator 
+		page.type("#name", "Niketan");                //Using id locator  ::type() method
+		page.type("#name", "Niketan", new TypeOptions().setDelay(100)); //type slowly as per delay(means Playwright will type one character every 100 ms)

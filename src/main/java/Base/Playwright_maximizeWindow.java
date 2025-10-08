@@ -41,7 +41,7 @@ Playwright playwright =Playwright.create();  //Create Playwright interface
   //Close the session.
 */
 
-	//Another way to maximized
+	//Another simple way of Maximizing the window - Code
 	ArrayList<String> arguments =new ArrayList<String>();
 	arguments.add("--start-maximized");
 	Browser browser= playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setArgs(arguments));
