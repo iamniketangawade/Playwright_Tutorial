@@ -7,7 +7,7 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
-public class LauchingChromeFirefoxEdge {
+public class Playwright_LauchingChromeFirefoxEdge {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

@@ -2,9 +2,7 @@ package Base;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Page.TypeOptions;
 import com.microsoft.playwright.Playwright;
 
 public class Playwright_handlinglocators {
@@ -26,10 +24,10 @@ public class Playwright_handlinglocators {
 		//page.type("#name", "Niketan", new TypeOptions().setDelay(100)); //type slowly as per delay(means Playwright will type one character every 100 ms)
 		//page.type("[id=\"name\"]", "Niketan");  //css Selctor
 		
-		page.type("//input[@id=\"Wikipedia1_wikipedia-search-input\"]", "Selenium");
+		//page.type("//input[@id=\"Wikipedia1_wikipedia-search-input\"]", "Selenium");
 		page.click("//input[@type=\"submit\"]");
 		System.out.println(page.locator("//a[normalize-space()=\"Selenium\"]").innerText());
-		System.out.println(page.locator("//a[normalize-space()=\"Selenium in biology\"]").innerText());
+	    System.out.println(page.locator("//a[normalize-space()=\"Selenium in biology\"]").innerText());
 
 		
 		

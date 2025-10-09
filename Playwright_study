@@ -111,4 +111,146 @@ Playwright
 
 		page.locator("#name").type("Niketan");       //Using id locator 
 		page.type("#name", "Niketan");                //Using id locator  ::type() method
+		
 		page.type("#name", "Niketan", new TypeOptions().setDelay(100)); //type slowly as per delay(means Playwright will type one character every 100 ms)
+		page.type("[id=\"name\"]", "Niketan");  //css Selctor
+		
+		page.type("//input[@id=\"Wikipedia1_wikipedia-search-input\"]", "Selenium");
+		page.click("[type=\"submit\"]");   //Click the button
+		System.out.println(page.locator("//a[normalize-space()=\"Selenium\"]").innerText());  //Getting inner text
+
+-------------------------------------------------------------------------------------------
+//Test generator ::
+mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="codegen <path>"
+//e.g -
+mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="codegen https://testautomationpractice.blogspot.com/?"
+
+-------------------------------------------------------------------------------------------		
+//Handle DropDownlist ::
+
+	//select by value ::
+	page.selectOption("select", "az");
+	
+	//select by Text ::
+	page.selectOption("select", new SelectOption().setLabel("Беларуская"));
+	
+	//Select by Index ::
+	page.selectOption("select", new SelectOption().setIndex(3));
+	
+	//Select by Size of drop-down ::
+		Locator  values = page.locator("select > option");
+		System.out.println(values.count());
+		
+		//How to print all values
+		for(int i=0;i<values.count();i++) {
+			System.out.println(values.nth(i).innerText());;
+		}
+//another Simple way  ::
+
+//Return list of webelement handle
+		List<ElementHandle> dropdownlist =page.querySelectorAll("select > option");
+		System.out.println(dropdownlist.size());
+		
+		for(ElementHandle i:dropdownlist) {
+			System.out.println(i.innerText());
+		}
+-------------------------------------------------------------------------------------------				
+//Handling Link
+		Locator links=page.locator("a");   
+		System.out.println("Link count  :: " +links.count());   //get count of link
+		
+//Handling link :: printing inner text and href(link)
+		for(int i=0;i<links.count();i++) {
+			System.out.println(links.nth(i).innerText() +" -> "+links.nth(i).getAttribute("href"));
+		}
+-------------------------------------------------------------------------------------------
+//Check multiple checkboxes::
+
+		Locator checkbox =page.locator("//div[@class='form-group']//input[@type='checkbox']");
+		System.out.println("How many check box are in Days ::" +checkbox.count());
+		
+		for(int i=0;i<checkbox.count();i++) {
+			checkbox.nth(i).click();   //Click all checkbox one by one (looping)
+			System.out.println(checkbox.nth(i).innerText());
+		}
+-------------------------------------------------------------------------------------------
+//Locators 
+ 
+//All locators ::
+id ,name ,cssSelector, Xpath, Classname, tagname, LinkText, partialLinkText
+
+//xpath ::
+
+     //tagname[@attribute ='value']
+  e.g :  //input[@id ='value'] 
+  
+  DOM ::console ::
+  For Xpath :: $x("<Element>")
+  $x("//input[@id='name']")
+	 
+   For Css selctor :: $$("<Element>")
+   $$("input[id='name']")
+-------------------------------------------------------------------------------------------
+//Alerts/ Dialogs:: 
+
+			page.onDialog(dialog ->{
+			dialog.accept();  //accept dialog
+			dialog.dismiss(); //dismiss dialog 
+			System.out.println(dialog.message()); //Capturing message popup print on console.
+		});
+		
+-------------------------------------------------------------------------------------------
+//iframe/frame ::
+
+		page.frameLocator("//frame[@src='frame_1.html']").locator("//input[@name=\"mytext1\"]").fill("Niketan");  //Switch to frame.
+		page.mainFrame();  //Switch back to parent frame.
+		
+		Locator frames =page.locator("frame");
+		System.out.println(frames.count());  //get count of all frame present on DOM.
+		
+		for(int i=0;i<frames.count();i++) {
+			System.out.println(frames.nth(i).getAttribute("src"));   //Return all src text
+		}
+		
+-------------------------------------------------------------------------------------------
+Method	                           Description
+-------------------------------------------------------------------------------------------
+
+page.frames()	                 Returns list of all frames
+page.frame(name)	             Access frame by name or id
+page.frameByUrl(".*iframe.*")    Access frame by matching URL
+frame.locator("selector")        Locate element inside frame
+page.mainFrame()	             Switch back to the parent (main) frame
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+//popup/window handles ::
+
+
+//Multiple window handles
+		Page childwindow =page.waitForPopup(() -> {
+			page.click("//a[normalize-space()=\"Selenium\"]");
+		});
+		
+		childwindow.locator("//input[@title=\"Search Wikipedia [alt-f]\"]").fill("Niketan");
+		System.out.println(childwindow.title());
+
+//another simple way
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------
+Method	                              Description
+-------------------------------------------------------------------------------------------
+page.waitForPopup()	                  Waits for a new tab/window to open
+context.pages()                       Returns a list of all open pages (tabs)
+page.bringToFront()	                  Brings a tab to focus
+page.close()	                      Closes a tab
+page.url()	                          Returns the page URL
+page.title()	                      Returns the page title
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
