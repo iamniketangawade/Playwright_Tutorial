@@ -243,6 +243,7 @@ page.mainFrame()	             Switch back to the parent (main) frame
 
 
 
+
 -------------------------------------------------------------------------------------------
 Method	                              Description
 -------------------------------------------------------------------------------------------
@@ -254,3 +255,84 @@ page.url()	                          Returns the page URL
 page.title()	                      Returns the page title
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
+
+Playwright provides a mouse object (from page.mouse()) that allows low-level control of mouse operations.
+You can perform:
+
+-------------------------------------------------------------------------------------------
+//Clicks (left, right, double)
+-------------------------------------------------------------------------------------------
+        page.mouse().click(200, 300);
+
+
+-------------------------------------------------------------------------------------------
+//Hovering ::
+-------------------------------------------------------------------------------------------
+	page.navigate("https://practice.expandtesting.com/hovers");
+		
+		String img1="img[alt=\"User Avatar\"][data-testid=\"img-user-1\"]";
+		page.locator(img1).hover(); 
+		
+-------------------------------------------------------------------------------------------
+//Drag and drop ::Movement
+-------------------------------------------------------------------------------------------
+page.navigate("https://jqueryui.com/resources/demos/droppable/default.html");
+		
+		//Drag and drop Element
+		Locator draggable = page.locator("#draggable");
+		Locator droppable = page.locator("#droppable");
+ 
+		page.mouse().move(draggable.boundingBox().x + draggable.boundingBox().width / 2,
+				          draggable.boundingBox().y + draggable.boundingBox().height / 2);
+		page.mouse().down();
+		page.mouse().move(droppable.boundingBox().x + droppable.boundingBox().width / 2,
+			              droppable.boundingBox().y + droppable.boundingBox().height / 2);
+		page.mouse().up();
+-------------------------------------------------------------------------------------------
+Mouse down/up (press & release)
+-------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------
+Scrolling (using wheel)
+-------------------------------------------------------------------------------------------
+		//Move mouse wheel downward direction::
+		page.mouse().wheel(0,500);        //(x axis , y axis)
+		//Move mouse wheel downward direction::
+		page.mouse().wheel(20,0); 
+		
+-------------------------------------------------------------------------------------------
+//slider  move :: same for resizeable element
+-------------------------------------------------------------------------------------------
+page.navigate("https://the-internet.herokuapp.com/horizontal_slider");
+		
+		//locating silder
+		Locator slider =page.locator("//input[@value=\"0\"]");
+		
+		//Get slider positon
+		BoundingBox sliderBox =slider.boundingBox();
+		
+		//calculate start postion(x and y)
+		double x= sliderBox.x +sliderBox.width/2;
+		double y= sliderBox.y+ sliderBox.height/2;
+		
+		//Move mouse to slider adn drag slightly 
+		page.mouse().move(x, y);   
+		page.mouse().down(); //Press and hold (mouse.down())
+		
+		page.mouse().move(x + 7, y);  //move 50 pixel
+		page.mouse().up();     //release mouse button
+-------------------------------------------------------------------------------------------	
+Common Mouse Methods
+-------------------------------------------------------------------------------------------
+Method	                                                      	  			  Description
+-------------------------------------------------------------------------------------------
+mouse.move(x, y)                                                	  		Move to coordinates
+mouse.click(x, y)	                                             		   Left click
+mouse.dblclick(x, y)	                                          		 	 Double click
+mouse.down()	                                                  		   Press mouse button
+mouse.up()	                                                      		   Release mouse button
+mouse.wheel(dx, dy)	                                                  	 	Scrolls the page
+mouse.click(x, y, new Mouse.ClickOptions().setButton(MouseButton.RIGHT))	 Right-click
+locator.hover()	                                                             Hover over an element
+locator.dragTo(target)	                                                     Drag and drop using locator
+-------------------------------------------------------------------------------------------	
