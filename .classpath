@@ -36,5 +36,15 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Niketan Gawade/.m2/repository/com/microsoft/playwright/playwright/1.54.0/playwright-1.54.0.jar" sourcepath="C:/Users/Niketan Gawade/.m2/repository/com/microsoft/playwright/playwright/1.54.0/playwright-1.54.0-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Niketan%20Gawade/.m2/repository/com/microsoft/playwright/playwright/1.54.0/playwright-1.54.0-javadoc.jar!/"/>
+			<attribute name="maven.groupId" value="com.microsoft.playwright"/>
+			<attribute name="maven.artifactId" value="playwright"/>
+			<attribute name="maven.version" value="1.54.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

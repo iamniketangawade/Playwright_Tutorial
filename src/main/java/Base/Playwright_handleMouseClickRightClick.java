@@ -20,11 +20,12 @@ public class Playwright_handleMouseClickRightClick {
 		//click mouse on specific element.
 		Locator button =page.locator("//button[normalize-space()=\"START\"]");
 		//Click:: page +locator
-		button.click();
+		//button.click();
 		
 		//Right click:: page +mouse +click
 		button.click(new Locator.ClickOptions().setButton(MouseButton.RIGHT));
-			
+		
+		
 	}
 
 }

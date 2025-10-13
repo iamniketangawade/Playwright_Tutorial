@@ -16,7 +16,7 @@ Playwright
 		Page page =browser.newPage();
 		
 		page.navigate("https://testautomationpractice.blogspot.com/?"); //Navigate URL
-		playwright.close();  //Close the session.		
+		playwright.close();  //Close the sessio		
 		
 		
 -------------------------------------------------------------------------------------------		
@@ -172,7 +172,24 @@ mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="co
 		for(int i=0;i<checkbox.count();i++) {
 			checkbox.nth(i).click();   //Click all checkbox one by one (looping)
 			System.out.println(checkbox.nth(i).innerText());
+
 		}
+
+//Check specific checkboxes ::
+		
+		Locator checkbox =page.locator("//div[@class='form-group']//input[@type='checkbox']");
+		System.out.println(checkbox.count());
+		
+		for (int i=0;i<checkbox.count();i++) {
+			Locator label =checkbox.nth(i).locator("xpath=following-sibling::label");
+			
+			String labletext =label.innerText();
+					
+			if(labletext.equalsIgnoreCase("Tuesday")) {
+				checkbox.nth(i).check();
+			}
+		}
+
 -------------------------------------------------------------------------------------------
 //Locators 
  
@@ -223,6 +240,9 @@ frame.locator("selector")        Locate element inside frame
 page.mainFrame()	             Switch back to the parent (main) frame
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
+
+
+
 //popup/window handles ::
 
 
@@ -234,15 +254,35 @@ page.mainFrame()	             Switch back to the parent (main) frame
 		childwindow.locator("//input[@title=\"Search Wikipedia [alt-f]\"]").fill("Niketan");
 		System.out.println(childwindow.title());
 
-//another simple way
+//multiple  window handle
+	List<Page> allpage =browsercontext.pages();
+		System.out.println("all page count : " +allpage.size());
+		for(Page i:allpage) {
+			System.out.println("title : " +i.title());
+		}
 
+//Muliple window handle and locator element
 
+Page childWindow =page.waitForPopup(() -> {
+			page.locator("//input[@id=\"Wikipedia1_wikipedia-search-input\"]").fill("selenium");
+			page.click("//input[@type=\"submit\"]");	
+			page.click("//a[contains(.,'Selenium')]");
+		});
+		
+		System.out.println(childWindow.title());
+		
+		List<Page> allpage =browsercontext.pages();
+		System.out.println("all page count : " +allpage.size());
+			//Page parent =allpage.get(0);
+			//Page child =allpage.get(1);
+			
+			//System.out.println(page.locator("//h1[@id=\"firstHeading\"]//span[@class=\"mw-page-title-main\"][normalize-space()=\"Selenium\"]").innerText());
+			
+			Page parent =allpage.get(0);
+			parent.bringToFront();
+			System.out.println(parent.title());
 
-
-
-
-
-
+			page.locator("//input[@id=\"Wikipedia1_wikipedia-search-input\"]").fill("happy");
 
 -------------------------------------------------------------------------------------------
 Method	                              Description
@@ -255,6 +295,10 @@ page.url()	                          Returns the page URL
 page.title()	                      Returns the page title
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
+
+
+
+//Mouse handle:: 
 
 Playwright provides a mouse object (from page.mouse()) that allows low-level control of mouse operations.
 You can perform:
@@ -288,10 +332,24 @@ page.navigate("https://jqueryui.com/resources/demos/droppable/default.html");
 		page.mouse().move(droppable.boundingBox().x + droppable.boundingBox().width / 2,
 			              droppable.boundingBox().y + droppable.boundingBox().height / 2);
 		page.mouse().up();
+		
+		
+//another simple way to drag and drop::
+
+			Locator draggable = page.locator("#draggable");
+			Locator droppable = page.locator("#droppable");
+ 
+			draggable.dragTo(droppable);
+			
+//another simple way to drag and drop::
+
+			page.locator("#drag").dragTo(page.locator("#drop"));
+
 -------------------------------------------------------------------------------------------
 Mouse down/up (press & release)
 -------------------------------------------------------------------------------------------
-
+mouse.down()	Press & hold the mouse button	
+mouse.up()		Release the mouse button
 -------------------------------------------------------------------------------------------
 Scrolling (using wheel)
 -------------------------------------------------------------------------------------------
@@ -321,6 +379,12 @@ page.navigate("https://the-internet.herokuapp.com/horizontal_slider");
 		
 		page.mouse().move(x + 7, y);  //move 50 pixel
 		page.mouse().up();     //release mouse button
+		
+
+//simple way to move slider ::
+		Locator sliderPoint= page.locator("//input[@value=\"0\"]");
+		sliderPoint.evaluate("el => el.value = 5");		
+		
 -------------------------------------------------------------------------------------------	
 Common Mouse Methods
 -------------------------------------------------------------------------------------------
@@ -336,3 +400,194 @@ mouse.click(x, y, new Mouse.ClickOptions().setButton(MouseButton.RIGHT))	 Right-
 locator.hover()	                                                             Hover over an element
 locator.dragTo(target)	                                                     Drag and drop using locator
 -------------------------------------------------------------------------------------------	
+
+
+
+-------------------------------------------------------------------------------------------	
+//handle KeyBorad event 
+-------------------------------------------------------------------------------------------	
+
+		page.navigate("https://testautomationpractice.blogspot.com/");
+		
+		page.locator("//input[@id=\"name\"]").type("Niketan");
+		//page.keyboard().press("Control+A");
+		//page.keyboard().press("Enter");
+		//page.keyboard().press("Tab");
+	   //page.keyboard().press("Space");
+		
+		 page.keyboard().down("Shift");
+		 
+		 for(int i=0;i<3;i++) {
+			 page.keyboard().press("ArrowLeft");
+			 
+		 }
+
+		page.locator("//input[@id=\"name\"]").type("Annu", new TypeOptions().setDelay(2000)); //handle even setting delay
+			
+			
+-------------------------------------------------------------------------------------------
+//File upload :single and multiple
+-------------------------------------------------------------------------------------------
+//single file upload 
+		page.navigate("https://www.way2automation.com/way2auto_jquery/registration.php#load_box");
+		page.locator("input[type=\"file\"]").setInputFiles(Paths.get("C:\\Users\\Niketan Gawade\\Documents\\AutomationTesting\\selenium\\test1.txt"));
+		
+//Multiple file upload ::
+		page.navigate("https://davidwalsh.name/demo/multiple-file-upload.php");
+		
+		page.locator("//input[@id=\"filesToUpload\"]").setInputFiles(
+				new Path[] {
+				Paths.get("C:\\Users\\Niketan Gawade\\Documents\\AutomationTesting\\selenium\\test1.txt"),
+				Paths.get("C:\\Users\\Niketan Gawade\\Documents\\AutomationTesting\\selenium\\test2.txt")			
+				});
+
+
+-------------------------------------------------------------------------------------------
+//File download and save particular location:; 
+-------------------------------------------------------------------------------------------
+        page.navigate("https://demo.automationtesting.in/FileDownload.html");
+		
+		Download file =page.waitForDownload(() -> {
+			
+			page.locator("//a[@type=\"button\"]").click();
+		});
+		
+		file.saveAs(Paths.get("C:\\Users\\Niketan Gawade\\Documents\\AutomationTesting\\selenium\\sample.pdf"));
+		
+		
+-------------------------------------------------------------------------------------------
+//Handle Basic Authencation 
+-------------------------------------------------------------------------------------------
+		Playwright playwright =Playwright.create();
+		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+		
+		//Handle basic Authencation:
+		BrowserContext browserContext =browser.newContext(new Browser.NewContextOptions().setHttpCredentials("admin", "admin"));
+		
+		Page page =browserContext.newPage();
+		page.navigate("http://the-internet.herokuapp.com/basic_auth");
+		
+		
+-------------------------------------------------------------------------------------------		
+//Screenshots ::
+-------------------------------------------------------------------------------------------
+//Capturing page screeshot::
+		String screenshot= "C:\\Users\\Niketan Gawade\\Documents\\AutomationTesting\\selenium\\Screenshots\\test1.png";
+		page.screenshot(new ScreenshotOptions().setPath(Paths.get(screenshot)));
+		
+		
+//Capturing specific webelement screenshot ::
+		page.locator("//button[normalize-space()=\"START\"]").screenshot(new Locator.ScreenshotOptions().setPath(Paths.get("C:\\Users\\Niketan Gawade\\Documents\\AutomationTesting\\selenium\\Screenshots\\test2.png")));
+		
+
+
+
+-------------------------------------------------------------------------------------------
+//Capture test video ::
+-------------------------------------------------------------------------------------------
+
+	//caputring video of test ::
+		String video="C:\\Users\\Niketan Gawade\\Documents\\AutomationTesting\\selenium\\Videos\\test1.mp4";
+		BrowserContext browsercontext =browser.newContext(new Browser.NewContextOptions().setRecordVideoDir(Paths.get(video)));
+		Page page =browsercontext.newPage();
+		page.navigate("https://testautomationpractice.blogspot.com/");
+		
+		page.locator("//input[@id=\"name\"]").fill("Niketan video is started.");
+		
+		playwright.close();
+-------------------------------------------------------------------------------------------		
+
+
+-------------------------------------------------------------------------------------------
+//TraceViewer ::	
+-------------------------------------------------------------------------------------------
+
+	BrowserContext browsercontext =browser.newContext();
+		
+		//TraceViewer  :: Tracing -start
+		browsercontext.tracing().start(new Tracing.StartOptions()
+				.setScreenshots(true)
+				.setSnapshots(true)
+				.setSources(false)
+				);
+		
+		
+		Page page =browsercontext.newPage();
+		page.navigate("https://testautomationpractice.blogspot.com/");
+		
+		page.locator("//input[@id=\"name\"]").fill("Niketan");
+		page.locator("//input[@id=\"email\"]").fill("Niketan@email.com");
+		page.locator("//input[@id=\"phone\"]").fill("844672060");
+
+		//Tracing -stop
+		browsercontext.tracing().stop(new Tracing.StopOptions()
+				.setPath(Paths.get("trace.zip"))
+				);
+			
+		
+	//close
+		page.close();
+		browsercontext.close();
+		playwright.close();		
+-------------------------------------------------------------------------------------------		
+
+
+
+
+-------------------------------------------------------------------------------------------
+//Playwright :Asseration 
+-------------------------------------------------------------------------------------------
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
+public class Playwright_Assertions {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Playwright playwright =Playwright.create();
+		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+		
+		Page page =browser.newPage();
+		page.navigate("https://testautomationpractice.blogspot.com/");
+		
+		assertThat(page).hasURL("https://testautomationpractice.blogspot./");
+		assertThat(page).hasTitle("Automation Testing Practice");
+		
+		page.close();
+		browser.close();
+		playwright.close();
+			
+
+-------------------------------------------------------------------------------------------
+//Playwright :WebTable 
+-------------------------------------------------------------------------------------------
+//Row count ::
+		Locator rows =page.locator("//table[@name=\"BookTable\"]//tr");
+		int totalRows =rows.count();
+		System.out.println("total column : "+ totalRows);
+		
+//Col count ::
+		Locator column =page.locator("//table[@name=\"BookTable\"]//tr[1]/th");
+		int totalColumn =column.count();
+		System.out.println("total row : "+ totalColumn);
+		
+//print all table value on console
+//Note ::Header contain th not td values so,everytime check table element in DOM  start index with 1.
+		for(int i=1;i<totalRows;i++) {
+			Locator colLocator=rows.nth(i).locator("td");
+			
+			for(int j=0;j<totalColumn;j++) {
+				String celltext =colLocator.nth(j).innerText();
+				
+			System.out.print(celltext + "\t");
+			}
+			System.out.println();
+			
+		}
+		
+//get specific cell data/value ::
+		String getSpecificCel=page.locator("//table[@name=\"BookTable\"]//tr[1]/th[1]").innerText();
+		System.out.println("cell value :" +getSpecificCel);
+		
+		
