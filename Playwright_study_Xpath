@@ -1,0 +1,87 @@
+✅ 1. Basic XPath Syntax
+page.locator("//tagname");                          // Select all elements with that tag
+page.locator("//input");                            // Select all <input> tags
+page.locator("//input[@id='name']");                // Attribute equals
+page.locator("//input[@type='text']");              // Attribute condition
+page.locator("//button[text()='Login']");           // Match text
+page.locator("//h1[contains(text(),'Welcome')]");   // Partial text match
+
+✅ 2. XPath with Multiple Attributes
+page.locator("//input[@type='text' and @name='username']");
+page.locator("//input[@type='text' or @name='email']");
+page.locator("//button[@id='submit' and contains(text(),'Login')]");
+
+✅ 3. XPath by Text Functions
+page.locator("//h2[text()='Contact Us']");                      // Exact text
+page.locator("//p[contains(text(),'Playwright')]");              // Partial text
+page.locator("//span[starts-with(text(),'Hello')]");             // Starts with
+page.locator("//div[normalize-space(text())='Submit']");         // Removes spaces
+
+✅ 4. XPath Using Attribute Functions
+page.locator("//input[contains(@name,'user')]");                 // Attribute partial match
+page.locator("//img[starts-with(@src,'https://')]");             // Starts with
+page.locator("//a[@href='#' or contains(@href,'login')]");       // Multiple conditions
+
+✅ 5. XPath with Index
+page.locator("(//input[@type='text'])[1]");     // 1st element
+page.locator("(//a[contains(text(),'Learn')])[2]");
+page.locator("(//button)[last()]");             // Last element
+page.locator("(//li)[position()=3]");           // Specific index
+
+✅ 6. XPath Axes (Navigation in DOM Tree)
+🔹 Parent
+page.locator("//input[@id='name']/parent::div");
+
+🔹 Child
+page.locator("//div[@class='form']/child::input");
+
+🔹 Ancestor
+page.locator("//span[text()='Email']/ancestor::form");
+
+🔹 Descendant
+page.locator("//form[@id='loginForm']/descendant::input");
+
+🔹 Following
+page.locator("//label[text()='Username']/following::input[1]");
+
+🔹 Following-sibling
+page.locator("//label[text()='Username']/following-sibling::input");
+
+🔹 Preceding
+page.locator("//input[@id='password']/preceding::label[1]");
+
+🔹 Preceding-sibling
+page.locator("//input[@id='password']/preceding-sibling::label");
+
+✅ 7. XPath Using Wildcards
+page.locator("//*");                               // Selects all elements
+page.locator("//*[text()='Login']");               // Any tag with text
+page.locator("//*[contains(@class,'btn')]");       // Any tag with class 'btn'
+
+✅ 8. XPath Using Logical Operators
+page.locator("//input[@type='text' and @name='username']");
+page.locator("//button[@type='submit' or @id='loginBtn']");
+
+✅ 9. XPath for Partial Matching
+page.locator("//a[contains(text(),'Sign')]");      // e.g., matches “Sign in”, “Sign up”
+page.locator("//div[contains(@class,'active')]");
+
+✅ 10. XPath with Dynamic Elements
+page.locator("//div[contains(@id,'user_')]");       // Dynamic IDs
+page.locator("//button[contains(@id,'btn_') and contains(text(),'Save')]");
+
+✅ 11. XPath for Lists and Tables
+// Selecting list items
+page.locator("//ul[@id='menu']/li[1]");             // First list item
+page.locator("//ul[@id='menu']/li[last()]");        // Last list item
+page.locator("//ul[@id='menu']/li[contains(text(),'Home')]");
+
+// Table Example
+page.locator("//table[@id='customers']//tr[2]/td[3]"); // 2nd row, 3rd column
+page.locator("//table[@id='customers']//th[text()='Country']"); // Header cell
+
+✅ 12. XPath for Buttons & Links
+page.locator("//button[@type='submit']");           // Button
+page.locator("//button[contains(text(),'Submit')]"); 
+page.locator("//a[text()='Click Here']");           // Link
+page.locator("//a[contains(@href,'contact')]");

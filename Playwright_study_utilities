@@ -1,0 +1,78 @@
+-------------------------------------------------------------------------------------------
+//Playwright :Utilites 
+-------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------
+//Playwright :config.properties file 
+-------------------------------------------------------------------------------------------
+//Create config.properties in resources\
+add userdata and xpath
+
+url=https://practice.expandtesting.com/login
+username=practice
+password=SuperSecertPassword!
+$username_xpath=//input[@id="username"]
+$password_xpath=//input[@id="password"]
+$login_button=//button[@id="submit-login"]
+
+
+
+	//How to read properties files
+		Properties prop=new Properties();
+		String filename ="C:\\Users\\Niketan Gawade\\eclipse-workspace\\Playwright-Java\\src\\main\\resources\\cofig.properties";
+		FileInputStream file =new FileInputStream(filename);
+		prop.load(file);
+		
+		System.out.println(prop.get("url"));
+-------------------------------------------------------------------------------------------	
+
+
+
+
+
+	
+		
+-------------------------------------------------------------------------------------------
+//Playwright : log4j
+-------------------------------------------------------------------------------------------	
+		
+		-Logger-getLogger()
+		-log4j.properties file -append
+		
+	 **Create log4j.properties:
+	 add  properties in file 
+______________________________________________________________________________________________________	 
+# ==============================
+# Log4j Configuration File
+# ==============================
+
+# Define the root logger with appender file and console
+log4j.rootLogger=DEBUG, CONSOLE, FILE
+
+# ------------------------------
+# Console Appender Configuration
+# ------------------------------
+log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.Target=System.out
+log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+log4j.appender.CONSOLE.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} [%p] %c - %m%n
+
+# ------------------------------
+# File Appender Configuration
+# ------------------------------
+log4j.appender.FILE=org.apache.log4j.RollingFileAppender
+log4j.appender.FILE.File=logs/automation.log
+log4j.appender.FILE.MaxFileSize=5MB
+log4j.appender.FILE.MaxBackupIndex=5
+log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+log4j.appender.FILE.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} [%p] %c - %m%n
+
+# ------------------------------
+# Set Logging Levels (Optional)
+# ------------------------------
+# Set custom levels for specific packages
+log4j.logger.org.openqa.selenium=INFO
+log4j.logger.com.microsoft.playwright=INFO
+log4j.logger.org.apache.http=ERROR
+______________________________________________________________________________________________________
+	 

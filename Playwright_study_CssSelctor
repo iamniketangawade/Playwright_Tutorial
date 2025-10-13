@@ -1,0 +1,149 @@
+✅ 1. Basic Tag Selector
+page.locator("input");            // All input tags
+page.locator("button");           // All button tags
+
+✅ 2. ID Selector
+page.locator("#name");            // Element with id="name"
+page.locator("#username");        // Single ID
+
+
+👉 Equivalent XPath: //*[@id='name']
+
+✅ 3. Class Selector
+page.locator(".btn");             // Element with class="btn"
+page.locator(".submit-button");   // Single class
+
+
+👉 Equivalent XPath: //*[@class='btn']
+
+✅ 4. Multiple Classes
+page.locator(".btn.primary");     // class="btn primary"
+page.locator(".form-control.input-lg");
+
+✅ 5. Attribute Selector
+page.locator("[type='text']");            // input type=text
+page.locator("[name='email']");           // name attribute
+page.locator("[placeholder='Username']"); // placeholder attribute
+
+✅ 6. Attribute Partial Match
+Selector	Meaning	Example
+[attr^='value']	Starts with	page.locator(\"[id^='user_']\")
+[attr$='value']	Ends with	page.locator(\"[id$='_input']\")
+[attr*='value']	Contains	page.locator(\"[id*='login']\")
+
+Example:
+
+page.locator("[id^='user_']");     // starts with
+page.locator("[id$='_input']");    // ends with
+page.locator("[id*='login']");     // contains
+
+✅ 7. Multiple Attribute Conditions
+page.locator("input[type='text'][name='username']");
+page.locator("button[type='submit'][class='btn']");
+
+✅ 8. Descendant Selector
+
+Selects elements inside another element.
+
+page.locator("form input");                 // input inside form
+page.locator("div.container button");       // button inside div.container
+
+
+👉 Equivalent XPath: //form//input
+
+✅ 9. Child Selector
+
+Selects direct child elements.
+
+page.locator("div > input");                // input directly inside div
+page.locator("ul > li");                    // li directly under ul
+
+
+👉 Equivalent XPath: //div/input
+
+✅ 10. Adjacent Sibling Selector
+
+Selects the immediately next element.
+
+page.locator("label + input");              // input immediately after label
+
+✅ 11. General Sibling Selector
+
+Selects all siblings after the first element.
+
+page.locator("label ~ input");              // all input elements after label
+
+✅ 12. Grouping Selectors
+
+Select multiple elements.
+
+page.locator("h1, h2, h3");                // All heading tags
+page.locator("input, textarea");           // Input and textarea both
+
+✅ 13. Nth Child / Index Selectors
+page.locator("ul li:first-child");          // First list item
+page.locator("ul li:last-child");           // Last list item
+page.locator("ul li:nth-child(3)");         // Third item
+
+
+👉 XPath equivalent: (//ul/li)[3]
+
+✅ 14. Pseudo-Class Selectors
+page.locator("input:enabled");              // All enabled inputs
+page.locator("input:disabled");             // Disabled inputs
+page.locator("input:checked");              // Checked checkbox/radio
+page.locator("a:visited");                  // Visited links
+page.locator("a:hover");                    // Hover links
+
+✅ 15. Pseudo-Element Selectors
+
+(Note: Limited direct support in Playwright locators, mainly visual testing use cases.)
+
+p::first-line
+p::before
+p::after
+
+✅ 16. Contains Text (Using :has-text())
+page.locator("button:has-text('Login')");
+page.locator("a:has-text('Click Here')");
+
+
+👉 Same as XPath: //button[text()='Login']
+
+✅ 17. Parent with Child Condition (:has())
+page.locator("div:has(input#username)");    // div having input with id='username'
+page.locator("form:has(button)");
+
+✅ 18. Negation Selector
+page.locator("input:not([type='password'])");  // All input except password field
+
+✅ 19. Visible Element Selector
+
+Playwright adds built-in visibility filters:
+
+page.locator("button:visible");   // Only visible buttons
+page.locator("a:visible");        // Only visible links
+
+✅ 20. nth-of-type Selector
+page.locator("table tr:nth-of-type(2) td:nth-of-type(3)"); // Row 2, Col 3
+
+✅ 21. CSS with Inner Text (Indirect Match)
+
+Since CSS alone can’t find text, combine with Playwright’s :has-text():
+
+page.locator("div:has-text('Welcome')");
+page.locator("li:has-text('Contact')");
+
+✅ 22. Chained Locators
+Locator form = page.locator("form#loginForm");
+Locator username = form.locator("input[name='username']");
+username.fill("Annu");
+
+✅ 23. CSS vs XPath Comparison
+Task	CSS Selector	XPath
+By ID	#id	//*[@id='id']
+By Class	.class	//*[@class='class']
+By Attribute	[name='value']	//*[@name='value']
+Contains Text	:has-text('text')	//*[contains(text(),'text')]
+Parent/Child	div > input	//div/input
+Partial Match	[id*='user']	//*[contains(@id,'user')]
