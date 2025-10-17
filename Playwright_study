@@ -1,6 +1,12 @@
+-------------------------------------------------------------------------------------------
 Playwright
 -------------------------------------------------------------------------------------------
+
+
+
+-------------------------------------------------------------------------------------------
 // Head-less
+-------------------------------------------------------------------------------------------
 		Playwright playwright =Playwright.create();  //Create Playwright interface
 		Browser browser= playwright.chromium().launch();
 		Page page =browser.newPage();
@@ -11,6 +17,7 @@ Playwright
 		
 -------------------------------------------------------------------------------------------		
 // Default  :: Chromium browser 
+-------------------------------------------------------------------------------------------
 		Playwright playwright =Playwright.create();  //Create Playwright interface
 		Browser browser= playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));  //lauching default chromium browser
 		Page page =browser.newPage();
@@ -21,6 +28,7 @@ Playwright
 		
 -------------------------------------------------------------------------------------------		
 //Maximize browser::
+-------------------------------------------------------------------------------------------
 		Browser browser= playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setArgs(java.util.Arrays.asList("--start-maximized"))); //maximized screen
 		BrowserContext browserContext= browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
 		Page page =browserContext.newPage();
@@ -28,7 +36,7 @@ Playwright
 🟢 --start-maximized opens the browser maximized.
 🟢 setViewportSize(null) ensures the browser context matches your full screen size.
 
--------------------------------------------------------------------------------------------	
+	
 //Another simple way of Maximizing the window - Code	
 		ArrayList<String> arguments =new ArrayList<String>();
 		arguments.add("--start-maximized");
@@ -40,12 +48,14 @@ Playwright
 	
 -------------------------------------------------------------------------------------------
 //minimize browser::
+-------------------------------------------------------------------------------------------
 		Browser browser= playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
 		BrowserContext browserContext= browser.newContext(new Browser.NewContextOptions().setViewportSize(200,100)); //Minimize the screen window as per user resolution 
 		Page page =browserContext.newPage();
 		
 -------------------------------------------------------------------------------------------		
 //Chrome browser lauch using EXE :chrome.exe
+-------------------------------------------------------------------------------------------
 		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setExecutablePath(Paths.get("C:\\Users\\Niketan Gawade\\chrome\\win64-141.0.7390.54\\chrome-win64\\chrome.exe")));
 		BrowserContext browsercontext =browser.newContext();
 		Page page = browsercontext.newPage();
@@ -53,19 +63,21 @@ Playwright
 		
 -------------------------------------------------------------------------------------------
 //Firefox browser launch 
+-------------------------------------------------------------------------------------------
 		Browser browser =playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
 		BrowserContext browsercontext =browser.newContext();
 		Page page = browsercontext.newPage();
 		
 		page.navigate("https://testautomationpractice.blogspot.com/?");
 		
--------------------------------------------------------------------------------------------		
+		
 //Another simple way of launch the browsers ::msedge,chrome,	
 		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("msedge").setHeadless(false));
 		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
 
 -------------------------------------------------------------------------------------------
 //Open specific user profile in browser
+-------------------------------------------------------------------------------------------
 		
 		String userInfo= "C:\\Users\\Niketan Gawade\\AppData\\Local\\Google\\Chrome\\User Data\\Default";
 		BrowserContext browsercontext = playwright.chromium().launchPersistentContext(Paths.get(userInfo),new BrowserType.LaunchPersistentContextOptions().setChannel("chrome").setHeadless(false).setArgs(java.util.Arrays.asList("--start-maximized")));
@@ -74,14 +86,17 @@ Playwright
 		
 -------------------------------------------------------------------------------------------
 //Incongito or private mode ::
+-------------------------------------------------------------------------------------------
 		Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
 		
 		BrowserContext browserContext =browser.newContext();
 		Page page =browserContext.newPage();
 		page.navigate("https://testautomationpractice.blogspot.com/?");
-		
+	
+	
 -------------------------------------------------------------------------------------------
 //Navigate methods::
+-------------------------------------------------------------------------------------------
 
 		✅ 1.Basic navigation option
 		page.navigate("https://testautomationpractice.blogspot.com/?");
@@ -108,6 +123,7 @@ Playwright
 		
 -------------------------------------------------------------------------------------------
 //Handling locators 
+-------------------------------------------------------------------------------------------
 
 		page.locator("#name").type("Niketan");       //Using id locator 
 		page.type("#name", "Niketan");                //Using id locator  ::type() method
@@ -121,12 +137,16 @@ Playwright
 
 -------------------------------------------------------------------------------------------
 //Test generator ::
+-------------------------------------------------------------------------------------------
 mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="codegen <path>"
 //e.g -
 mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="codegen https://testautomationpractice.blogspot.com/?"
+-------------------------------------------------------------------------------------------
+
 
 -------------------------------------------------------------------------------------------		
 //Handle DropDownlist ::
+-------------------------------------------------------------------------------------------
 
 	//select by value ::
 	page.selectOption("select", "az");
@@ -154,8 +174,12 @@ mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="co
 		for(ElementHandle i:dropdownlist) {
 			System.out.println(i.innerText());
 		}
+		
+		
+		
 -------------------------------------------------------------------------------------------				
 //Handling Link
+-------------------------------------------------------------------------------------------
 		Locator links=page.locator("a");   
 		System.out.println("Link count  :: " +links.count());   //get count of link
 		
@@ -165,6 +189,7 @@ mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="co
 		}
 -------------------------------------------------------------------------------------------
 //Check multiple checkboxes::
+-------------------------------------------------------------------------------------------
 
 		Locator checkbox =page.locator("//div[@class='form-group']//input[@type='checkbox']");
 		System.out.println("How many check box are in Days ::" +checkbox.count());
@@ -192,6 +217,7 @@ mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="co
 
 -------------------------------------------------------------------------------------------
 //Locators 
+-------------------------------------------------------------------------------------------
  
 //All locators ::
 id ,name ,cssSelector, Xpath, Classname, tagname, LinkText, partialLinkText
@@ -207,8 +233,11 @@ id ,name ,cssSelector, Xpath, Classname, tagname, LinkText, partialLinkText
 	 
    For Css selctor :: $$("<Element>")
    $$("input[id='name']")
+   
+   
 -------------------------------------------------------------------------------------------
 //Alerts/ Dialogs:: 
+-------------------------------------------------------------------------------------------
 
 			page.onDialog(dialog ->{
 			dialog.accept();  //accept dialog
@@ -218,6 +247,7 @@ id ,name ,cssSelector, Xpath, Classname, tagname, LinkText, partialLinkText
 		
 -------------------------------------------------------------------------------------------
 //iframe/frame ::
+-------------------------------------------------------------------------------------------
 
 		page.frameLocator("//frame[@src='frame_1.html']").locator("//input[@name=\"mytext1\"]").fill("Niketan");  //Switch to frame.
 		page.mainFrame();  //Switch back to parent frame.
@@ -243,8 +273,11 @@ page.mainFrame()	             Switch back to the parent (main) frame
 
 
 
-//popup/window handles ::
 
+
+-------------------------------------------------------------------------------------------
+//popup/window handles ::
+-------------------------------------------------------------------------------------------
 
 //Multiple window handles
 		Page childwindow =page.waitForPopup(() -> {
@@ -297,8 +330,9 @@ page.title()	                      Returns the page title
 -------------------------------------------------------------------------------------------
 
 
-
+-------------------------------------------------------------------------------------------
 //Mouse handle:: 
+-------------------------------------------------------------------------------------------
 
 Playwright provides a mouse object (from page.mouse()) that allows low-level control of mouse operations.
 You can perform:
@@ -400,6 +434,8 @@ mouse.click(x, y, new Mouse.ClickOptions().setButton(MouseButton.RIGHT))	 Right-
 locator.hover()	                                                             Hover over an element
 locator.dragTo(target)	                                                     Drag and drop using locator
 -------------------------------------------------------------------------------------------	
+
+
 
 
 
@@ -593,3 +629,4 @@ public class Playwright_Assertions {
 		
 -------------------------------------------------------------------------------------------	
 		
+

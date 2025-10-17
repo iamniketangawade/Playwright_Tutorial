@@ -34,12 +34,20 @@ $login_button=//button[@id="submit-login"]
 		
 -------------------------------------------------------------------------------------------
 //Playwright : log4j
--------------------------------------------------------------------------------------------	
-		
+-------------------------------------------------------------------------------------------
+-
 		-Logger-getLogger()
 		-log4j.properties file -append
+
+//add dependencies ::
+<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+<dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>1.2.17</version>
+</dependency>		
 		
-	 **Create log4j.properties:
+//Create log4j.properties:
 	 add  properties in file 
 ______________________________________________________________________________________________________	 
 # ==============================
@@ -76,3 +84,59 @@ log4j.logger.com.microsoft.playwright=INFO
 log4j.logger.org.apache.http=ERROR
 ______________________________________________________________________________________________________
 	 
+	 
+	
+		
+-------------------------------------------------------------------------------------------
+//Playwright : JDBC
+-------------------------------------------------------------------------------------------		 
+//add dependencies ::
+
+
+<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+<dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+    <version>9.4.0</version>
+</dependency>
+
+//Code:::
+
+//1.create connection
+		Connection connection =DriverManager.getConnection("jdbc:mysql://localhost:3306","root","!QAZxsw2");
+	
+//2.Create a statement/Query
+		Statement statement =connection.createStatement();
+		
+//write query you want execute
+		String useDatabaseQuery="USE students";
+		String selectDatabaseQuery="SELECT * FROM students";	
+		
+//3.Execute query
+		statement.execute(useDatabaseQuery);
+		
+//4.Result set
+		ResultSet set =statement.executeQuery(selectDatabaseQuery);
+		
+// Step 5: Get column info (metadata)
+        ResultSetMetaData rsmd = set.getMetaData();
+        int columnCount = rsmd.getColumnCount();
+
+// Step 6: Print column headers
+        for (int i = 1; i <= columnCount; i++) {
+            System.out.print(rsmd.getColumnName(i) + "\t");
+        }
+        System.out.println("\n----------------------------------------");
+
+// Step 7: Loop through results
+        while (set.next()) {
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.print(set.getString(i) + "\t");
+            }
+            System.out.println();
+        }
+		
+//8.close connection
+		connection.close();
+		System.out.println("Query executed....");
+

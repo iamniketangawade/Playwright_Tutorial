@@ -1,0 +1,300 @@
+-------------------------------------------------------------------------------------------
+TestNG :
+-------------------------------------------------------------------------------------------
+TestNG is java framework for selenim,appium and API testing
+
+
+//add dependency or add external jars 
+  <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>7.11.0</version>
+    <scope>test</scope>
+</dependency>
+
+-------------------------------------------------------------------------------------------
+//TestNG Annotations ::
+-------------------------------------------------------------------------------------------
+  @BeforeMethod  //Every method before execute this method 
+	public void lauchBrowser() {
+		System.out.println("lauchBrowser");
+	}
+	
+		@Test  //execute test case method
+		public void Login() {
+			System.out.println("login");
+		}
+		
+		@Test(priority = 1) //setup the priority for testcase method which will execute first
+		public void setupField() {
+			System.out.println("setupfield");
+		}
+		
+		@AfterMethod   //Every method after execute this method 
+		public void CloseBrowser() {
+			System.out.println("Close browser");
+		}
+		
+-------------------------------------------------------------------------------------------
+TestNG ::Assertion
+-------------------------------------------------------------------------------------------
+@Test
+	public void validateTitle() {
+		
+		String expected_title="gmail.com";
+		String actual_title="yahoo.com";
+		
+		if (expected_title.equals(actual_title)) {
+			System.out.println("Testcase Passed");
+		}
+		else {
+			System.out.println("Testcase Failed");
+
+		}
+//Result :
+		// result print :: Testcase Failed
+		//PASSED: TestNG.Playwright_AsserationReportingFailures.validateTitle
+		
+-------------------------------------------------------------------------------------------
+Type	           Class	                          Behavior
+-------------------------------------------------------------------------------------------
+✅ Hard Assert	org.testng.Assert	            Stops execution immediately if a check fails
+🧵 Soft Assert	org.testng.asserts.SoftAssert	Allows test to continue even if a check fails, and reports all failures at the end
+-------------------------------------------------------------------------------------------
+
+Summary Table
+-------------------------------------------------------------------------------------------
+Method                       	     Purpose
+-------------------------------------------------------------------------------------------
+softAssert.assertEquals()	    Compare two values
+softAssert.assertTrue()      	Check a condition
+softAssert.assertFalse()     	Check condition is false
+softAssert.assertAll()	       Report all collected failures
+-------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------
+@@ Dependepend on another method
+-------------------------------------------------------------------------------------------
+//dependsOnMethods ="Login"
+//alwaysRun = true
+
+@BeforeMethod  //Every method before execute this method 
+		public void lauchBrowser() {
+		System.out.println("lauchBrowser");
+		}
+	
+		@Test(priority = 1) //execute test case method
+		public void Login() {
+			System.out.println("login");
+			Assert.fail("user not registered successfully");
+		}
+		
+		@Test(priority = 2,dependsOnMethods ="Login",alwaysRun = true)        //setup the priority for testcase method which will execute first
+		public void setupField() {
+			System.out.println("setupfield");
+		}
+		
+		@AfterMethod   //Every method after execute this method 
+		public void CloseBrowser() {
+			System.out.println("Close browser");
+		}	
+		
+		
+-------------------------------------------------------------------------------------------
+//@TestNG ::creating suite
+-------------------------------------------------------------------------------------------
+
+Creating testng.xml mannualy or automatically by Convert to testng option 
+
+sample testng.xml file :::
+______________________________________________________________________________________________
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="MyTestSuite">
+    <test name="LoginTests">
+        <classes>
+            <class name="TestNG.Playwright_creatingTestsuite"/>     
+        </classes>
+    </test>
+
+    <test name="LogintestAgain">
+        <classes>
+            <class name="TestNG.Playwright_creatingTestsuite"/>     
+        </classes>
+    </test>
+    
+       <test name="Logins">
+        <classes>
+            <class name="TestNG.Playwright_creatingTestsuite"/>     
+        </classes>
+    </test>
+</suite>
+______________________________________________________________________________________________
+
+
+
+
+
+-------------------------------------------------------------------------------------------
+//Managed multiple test suite:::
+-------------------------------------------------------------------------------------------
+e.g ::
+** there two different suites in sanity and regression.
+______________________________________________________________________________________________
+1.sanity_testng.xml
+ <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Sanity Testing">
+    <test name="LoginTests">
+        <classes>
+            <class name="TestNG.Playwright_creatingTestsuite"/>     
+        </classes>
+    </test>
+
+</suite>
+______________________________________________________________________________________________
+2.regression_testng.xml
+ <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Regression Testing">
+    <test name="LoginTests">
+        <classes>
+            <class name="TestNG.Playwright_creatingTestsuite"/>     
+        </classes>
+    </test>
+
+</suite>
+______________________________________________________________________________________________
+***Run both suites together ::
+______________________________________________________________________________________________
+  <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Sanity Testing">
+
+<suite-files>
+    <suite-file>sanity_testng.xml</suite-file>
+	<suite-file>regression_testng.xml</suite-file>
+</suite-files>
+
+</suite>
+-------------------------------------------------------------------------------------------
+ 
+
+
+
+-------------------------------------------------------------------------------------------
+//Tests Group ::
+-------------------------------------------------------------------------------------------
+Go inside testng.xml
+declare what testcases you want to execute.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="MyTestSuite">
+
+<groups>
+	<run>
+		<include name="regression"></include>
+		<exclude name="smoke"></exclude>
+	</run>
+</groups>	
+
+	<test name="LoginTests">
+		<classes>
+			<class name="TestNG.Playwright_testsGroups" />
+		</classes>
+	</test>
+</suite>
+
+______________________________________________________________________________________________
+
+e.g::
+	@Test(groups = "smoke")
+	public void lauchBrowser() {
+		System.out.println("lauchBrowser");
+	}
+
+	@Test(groups = {"smoke" ,"sanity"})
+	public void Login() {
+		System.out.println("login");
+	}
+
+	@Test(groups = {"regression","sanity"})
+	public void setupField() {
+		System.out.println("setupfield");
+	}
+	
+	@Test(groups = {"regression","sanity"})
+	public void CloseBrowser() {
+		System.out.println("Close browser");
+	}
+-------------------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------------------------
+//Tests Listener ::
+-------------------------------------------------------------------------------------------
+there are two ways for listener :
+
+@Listeners(Playwright_listeners.class) // Link the listener to this class
+public class Playwright_creatingTestsuite {.....}
+
+ OR
+ 
+add listener in testng.xml file :
+ <listeners>
+    <listener class-name="listeners.TestListener" />
+</listeners>
+
+__________________________________________________________________________________________
+ **sepearte class for listener::
+ public void onTestStart(ITestResult result) {
+	        System.out.println("🟡 Test Started: " + result.getName());
+	    }
+
+	    @Override
+	    public void onTestSuccess(ITestResult result) {
+	        System.out.println("✅ Test Passed: " + result.getName());
+	    }
+
+	    @Override
+	    public void onTestFailure(ITestResult result) {
+	        System.out.println("❌ Test Failed: " + result.getName());
+	    }
+
+	    @Override
+	    public void onTestSkipped(ITestResult result) {
+	        System.out.println("⚪ Test Skipped: " + result.getName());
+	    }
+-------------------------------------------------------------------------------------------
+	
+	
+-------------------------------------------------------------------------------------------		
+//Forcefully skip test case		.
+-------------------------------------------------------------------------------------------
+
+public void setupFiles() {
+			throw new SkipException("Skipping test case");
+	}
+-------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------		
+//BeforeSuite and AfterSuite
+-------------------------------------------------------------------------------------------		
+
+@BeforeSuite
+		public void setup(){
+			System.out.println("setup browser");
+		}
+		
+@AfterSuite
+		public void tearDown(){
+			System.out.println("close browser");
+		}
+-------------------------------------------------------------------------------------------

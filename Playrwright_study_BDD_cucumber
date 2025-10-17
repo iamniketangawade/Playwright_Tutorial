@@ -1,0 +1,156 @@
+
+-------------------------------------------------------------------------------------------		
+//Live Project ::BDD Cucumber
+-------------------------------------------------------------------------------------------
+Create a maven project
+//add cucumber dependencies 
+_____________________________________________________________________________________________
+ <dependencies>
+    <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-testng -->
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-testng</artifactId>
+    <version>7.30.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-java</artifactId>
+    <version>7.30.0</version>
+</dependency>
+  </dependencies>
+_____________________________________________________________________________________________
+
+
+//add cucumber plugin-
+
+for vs code::
+Plugin name:
+🔹 Cucumber (Gherkin) Full Support
+Publisher: Alexander Krechik
+
+IN eclipse in marketplace.
+
+
+_____________________________________________________________________________________________
+create feature folder and add feature file
+
+Feature: Login Feature
+
+    In order to perform successful Login
+    As a User
+    I Have to enter correct username  and Password
+
+    Scenario: Login to login website
+    Given User navigate to website 
+    When user validates the website title
+    Then user enters username
+    And user enters Password
+    And user clicks on the submit button
+____________________________________________________________________________________________
+
+-------------------------------------------------------------------------------------------
+Create stepDefination folder and e.g stepDefination file ->loginPage.java ||src/java/Package/loginPage.java
+-------------------------------------------------------------------------------------------
+e.g :-
+package steps;
+
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+public class loginPage {
+	Playwright playwright =Playwright.create();
+	Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false).setArgs(java.util.Arrays.asList("--start-maximized")));
+	BrowserContext browsercontext =browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
+	Page page=browsercontext.newPage();
+
+	@Given("User navigate to website")
+	public void user_navigate_to_website() {
+		
+		page.navigate("https://practice.expandtesting.com/login");
+	}
+
+	@When("user validates the website title")
+	public void user_validates_the_website_title() {
+	   String title =page.title();
+	   System.out.println("Page title: "+ title);
+	}
+
+	@Then("user enters username")
+	public void user_enters_username() {
+	   page.locator("//input[@id=\"username\"]").fill("practice");
+	}
+
+	@And("user enters Password")
+	public void user_enters_password() {
+		 page.locator("//input[@id=\"password\"]").fill("SuperSecretPassword!");
+	}
+
+	@And("user clicks on the submit button")
+	public void user_clicks_on_the_submit_button() {
+		   page.click("//button[@id=\"submit-login\"]");
+	}
+}
+____________________________________________________________________________________________
+
+-------------------------------------------------------------------------------------------
+Create a Runner file
+-------------------------------------------------------------------------------------------
+//create a test runner file
+____________________________________________________________________________________________
+
+Add in test Runner:: 
+
+
+import io.cucumber.testng.AbstractTestNGCucumberTests;
+import io.cucumber.testng.CucumberOptions;
+
+@CucumberOptions(features = "src/test/resources/feature", glue = {"steps"},plugin ="html:target/cucumber-reports/cucu-html-report.html")
+public class runnerClass extends AbstractTestNGCucumberTests {
+
+}
+____________________________________________________________________________________________
+
+
+-------------------------------------------------------------------------------------------
+Create cucumber test report
+-------------------------------------------------------------------------------------------
+
+Add in test Runner:: 
+
+@CucumberOptions(plugin ="html:target/cucumber-reports/cucu-html-report.html")
+public class runnerfile extends AbstractTestNGCucumberTests {
+
+}
+
+
+
+-------------------------------------------------------------------------------------------
+Create cucumber extent report
+-------------------------------------------------------------------------------------------
+
+Add dependencies :: extentreports-cucumber7-adapter
+
+<!-- https://mvnrepository.com/artifact/tech.grasshopper/extentreports-cucumber7-adapter -->
+<dependency>
+    <groupId>tech.grasshopper</groupId>
+    <artifactId>extentreports-cucumber7-adapter</artifactId>
+    <version>1.14.0</version>
+</dependency>
+
+
+Add in test Runner:: 
+@CucumberOptions(features = "src/test/resources/feature", glue = {"steps"},plugin ="html:target/cucumber-reports/cucu-html-report.html,com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:")
+public class runnerfile extends AbstractTestNGCucumberTests {
+
+}
+-------------------------------------------------------------------------------------------

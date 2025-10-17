@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
 public class Playwright_Log4j {
@@ -28,6 +27,7 @@ public class Playwright_Log4j {
 				Playwright playwright =Playwright.create();
 				Browser browser =playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
 				log.info("Chrome browser lauched");
+				log.error("Error find..............");
 				
 				playwright.close();
 	}
